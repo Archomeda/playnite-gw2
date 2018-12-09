@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="PlayniteGw2.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PlayniteGw2"
+             mc:Ignorable="d">
+
+    <d:DesignerProperties.DesignStyle>
+        <Style TargetType="UserControl">
+            <Setter Property="Background" Value="White"/>
+        </Style>
+    </d:DesignerProperties.DesignStyle>
+
+    <UserControl.Resources>
+        <Style TargetType="GridSplitter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            
+            <StackPanel Margin="4">
+                <TextBlock Text="General options"/>
+                <Grid Margin="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,2,10,2" VerticalAlignment="Center" Text="Path"/>
+                    <Grid Grid.Row="0" Grid.Column="1" Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Width="Auto" VerticalAlignment="Center" Text="{Binding DefaultPath}"/>
+                        <Button Grid.Column="1" Margin="4,0,0,0" Content="..." VerticalAlignment="Center" Click="ButtonEditDefaultPath_Click"/>
+                    </Grid>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,2,10,2" VerticalAlignment="Center" Text="Arguments"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,2" VerticalAlignment="Center" Text="{Binding DefaultArguments}"/>
+                </Grid>
+            </StackPanel>
+            
+            <StackPanel Margin="4">
+                <TextBlock Text="Accounts"/>
+                <ItemsControl ItemsSource="{Binding GuildWars2Accounts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="4">
+                                <Grid Margin="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,2,10,2" VerticalAlignment="Center" Text="Unique ID"/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" Margin="0,2" VerticalAlignment="Center" Text="{Binding Path=Id}"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,2,10,2" VerticalAlignment="Center" Text="Name"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,2" VerticalAlignment="Center" Text="{Binding Path=Name}"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,2,10,2" VerticalAlignment="Center" Text="Custom Path"/>
+                                    <Grid Grid.Row="2" Grid.Column="1" Margin="0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox Grid.Column="0" Width="Auto" VerticalAlignment="Center" Text="{Binding Path=ExecutablePath}"/>
+                                        <Button Grid.Column="1" Margin="4,0,0,0" Content="..." VerticalAlignment="Center" Click="ButtonEditExecutablePath_Click"/>
+                                    </Grid>
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,2,10,2" VerticalAlignment="Center" Text="Custom Arguments"/>
+                                    <TextBox Grid.Row="3" Grid.Column="1" Margin="0,2" VerticalAlignment="Center" Text="{Binding Path=Arguments}"/>
+                                    <Button Grid.Row="4" Margin="0,2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Content="Delete" Click="ButtonDelete_Click"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Margin="0,4" HorizontalAlignment="Left" Content="Add Account" Click="ButtonAdd_Click"/>
+            </StackPanel>
+            
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
