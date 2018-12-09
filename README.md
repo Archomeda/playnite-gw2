@@ -32,7 +32,7 @@ Now you can use them to launch the game with your accounts.
 As mentioned before, this plug-in does not store any Guild Wars 2 credentials and has therefore no knowledge about the actual accounts you use.
 
 ## Technical details
-The trick this plug-in uses is not that exiting at all, but very useful in this case.
+The trick this plug-in uses is not that exciting at all, but very useful in this case.
 Guild Wars 2 maintains a special file in the AppData folder called `Local.dat`.
 This is the file where all your account settings are saved, including your credentials (encrypted of course).
 This plug-in just swaps this file in and out based on the account you launch.
