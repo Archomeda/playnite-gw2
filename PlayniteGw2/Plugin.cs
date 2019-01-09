@@ -8,7 +8,12 @@ using Playnite.SDK.Plugins;
 
 namespace PlayniteGw2
 {
-    public class Plugin : ILibraryPlugin
+    public interface ILibraryPlugin465 : ILibraryPlugin
+    {
+        bool IsClientInstalled { get; }
+    }
+
+    public class Plugin : ILibraryPlugin465
     {
         private readonly IPlayniteAPI api;
 
@@ -22,6 +27,8 @@ namespace PlayniteGw2
         public void Dispose() { }
 
         public Guid Id => PluginId;
+
+        public bool IsClientInstalled => true;
 
         public string Name => "Guild Wars 2";
 
