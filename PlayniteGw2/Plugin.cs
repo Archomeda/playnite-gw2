@@ -8,12 +8,7 @@ using Playnite.SDK.Plugins;
 
 namespace PlayniteGw2
 {
-    public interface ILibraryPlugin465 : ILibraryPlugin
-    {
-        bool IsClientInstalled { get; }
-    }
-
-    public class Plugin : ILibraryPlugin465
+    public class Plugin : ILibraryPlugin
     {
         private readonly IPlayniteAPI api;
 
