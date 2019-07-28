@@ -1,81 +1,68 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Playnite.SDK;
 using Playnite.SDK.Events;
 using Playnite.SDK.Models;
 
 namespace PlayniteGw2.Proxy
 {
+    [SuppressMessage("Major Code Smell", "S3881:\"IDisposable\" should be implemented correctly", Justification = "Proxy")]
     internal class GenericGameControllerProxy : IGameController
     {
-        private const string TypeName = "Playnite.Controllers.GenericGameController, Playnite";
-        private static readonly Type TypeObject;
+        private const string TYPE_NAME = "Playnite.Controllers.GenericGameController, Playnite";
+        private static readonly Type typeObject = Type.GetType(TYPE_NAME);
 
         private readonly IGameController genericGameController;
 
-        static GenericGameControllerProxy()
-        {
-            TypeObject = Type.GetType(TypeName);
-            if (TypeObject == null)
-                throw new InvalidOperationException($"Type {TypeName} could not be found, cannot proceed.");
-        }
-
         public GenericGameControllerProxy(Game game)
         {
-            this.genericGameController = (IGameController)Activator.CreateInstance(TypeObject, AppProxy.Database, game);
+            this.genericGameController = (IGameController)Activator.CreateInstance(typeObject, PlayniteApplicationProxy.Database, game);
         }
 
         public bool IsGameRunning => this.genericGameController.IsGameRunning;
 
         public Game Game => this.genericGameController.Game;
 
-        public event GameControllerEventHandler Starting
+        public event EventHandler<GameControllerEventArgs> Starting
         {
             add => this.genericGameController.Starting += value;
             remove => this.genericGameController.Starting -= value;
         }
 
-        public event GameControllerEventHandler Started
+        public event EventHandler<GameControllerEventArgs> Started
         {
             add => this.genericGameController.Started += value;
             remove => this.genericGameController.Started -= value;
         }
 
-        public event GameControllerEventHandler Stopped
+        public event EventHandler<GameControllerEventArgs> Stopped
         {
             add => this.genericGameController.Stopped += value;
             remove => this.genericGameController.Stopped -= value;
         }
 
-        public event GameControllerEventHandler Uninstalled
+        public event EventHandler<GameControllerEventArgs> Uninstalled
         {
             add => this.genericGameController.Uninstalled += value;
             remove => this.genericGameController.Uninstalled -= value;
         }
 
-        public event GameControllerEventHandler Installed
+        public event EventHandler<GameInstalledEventArgs> Installed
         {
             add => this.genericGameController.Installed += value;
             remove => this.genericGameController.Installed -= value;
         }
 
-        public virtual void Play()
-        {
+        public virtual void Play() =>
             this.genericGameController.Play();
-        }
 
-        public virtual void Install()
-        {
+        public virtual void Install() =>
             this.genericGameController.Install();
-        }
 
-        public virtual void Uninstall()
-        {
+        public virtual void Uninstall() =>
             this.genericGameController.Uninstall();
-        }
 
-        public virtual void Dispose()
-        {
+        public virtual void Dispose() =>
             this.genericGameController.Dispose();
-        }
     }
 }

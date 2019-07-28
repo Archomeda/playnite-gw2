@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PlayniteGw2": {
+      "commandName": "Executable",
+      "executablePath": "%PROGRAMFILES%\\Playnite\\Playnite.DesktopApp.exe"
+    }
+  }
+}

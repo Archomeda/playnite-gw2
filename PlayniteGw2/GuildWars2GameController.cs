@@ -23,7 +23,7 @@ namespace PlayniteGw2
         public override void Play()
         {
             if (this.Game.PlayAction == null)
-                throw new Exception("Cannot start game without play action");
+                throw new InvalidOperationException("Cannot start game without play action");
 
             var accountData = this.settings.GuildWars2Accounts.FirstOrDefault(a => a.InternalId.ToString() == this.Game.GameId);
 
@@ -65,7 +65,10 @@ namespace PlayniteGw2
             this.Stopped -= this.GuildWars2GameController_Stopped;
         }
 
-        public override void Install() { }
+        public override void Install()
+        {
+            // Method intentionally left empty.
+        }
 
         public override void Uninstall()
         {

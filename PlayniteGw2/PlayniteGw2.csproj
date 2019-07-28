@@ -5,6 +5,7 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <NullableContextOptions>enable</NullableContextOptions>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     
     <PostBuildEvent>xcopy "$(TargetDir)*" "%APPDATA%\Playnite\Extensions\PlayniteGw2\" /Y</PostBuildEvent>
   </PropertyGroup>
@@ -23,8 +24,8 @@
   
   <ItemGroup>
     <PackageReference Include="LiteDB" Version="3.1.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
-    <PackageReference Include="PlayniteSDK" Version="4.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="PlayniteSDK" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

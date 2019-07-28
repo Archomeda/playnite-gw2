@@ -5,7 +5,7 @@ namespace PlayniteGw2.Extensions
 {
     internal static class DependencyObjectExtensions
     {
-        public static T GetVisualParent<T>(this DependencyObject dependencyObject) where T : class
+        public static T? GetVisualParent<T>(this DependencyObject dependencyObject) where T : class
         {
             var parent = dependencyObject;
             while (!(parent is T || parent == null))

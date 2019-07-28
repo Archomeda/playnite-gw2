@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using Playnite.SDK;
 
 namespace PlayniteGw2
 {
-    public class Settings : ObservableObject, ISettings, INotifyPropertyChanged
+    public class Settings : ObservableObject, ISettings
     {
         private readonly IPlayniteAPI api;
         private readonly Plugin plugin;
@@ -20,7 +19,7 @@ namespace PlayniteGw2
             this.api = api;
             this.plugin = plugin;
 
-            var savedSettings = api.LoadPluginSettings<Settings>(plugin);
+            var savedSettings = plugin.LoadPluginSettings<Settings>();
             if (savedSettings != null)
             {
                 this.GuildWars2Accounts = savedSettings.GuildWars2Accounts;
@@ -57,37 +56,41 @@ namespace PlayniteGw2
 
         public ICollection<GuildWars2AccountData> GuildWars2Accounts { get; set; } = new ObservableCollection<GuildWars2AccountData>();
 
-        public void BeginEdit() { }
+        public void BeginEdit()
+        {
+            // Method intentionally left empty.
+        }
 
-        public void CancelEdit() { }
+        public void CancelEdit()
+        {
+            // Method intentionally left empty.
+        }
 
         public void EndEdit()
         {
-            this.api.SavePluginSettings(this.plugin, this);
+            this.plugin.SavePluginSettings(this);
 
             var addedGames = new HashSet<string>(this.GuildWars2Accounts.Select(a => a.InternalId.ToString()));
-            var games = this.api.Database.GetGames()
+            var games = this.api.Database.Games
                 .Where(g => addedGames.Contains(g.GameId))
                 .ToDictionary(g => g.GameId, g => g);
 
             foreach (var account in this.GuildWars2Accounts)
             {
                 if (games.TryGetValue(account.InternalId.ToString(), out var game))
-                    this.api.Database.UpdateGame(account.ToPlayniteGame(game, this));
+                    this.api.Database.Games.Update(account.UpdatePlayniteGame(game, this));
                 else
                 {
                     game = account.ToPlayniteGame(this);
-                    var metadata = this.plugin.GetMetadataDownloader().GetMetadata(game);
-                    game = metadata.GameData;
-                    this.api.Database.AddGame(game);
+                    this.api.Database.Games.Add(game);
                 }
             }
 
-            var pluginGames = this.api.Database.GetGames().Where(g => g.PluginId == Plugin.PluginId);
+            var pluginGames = this.api.Database.Games.Where(g => g.PluginId == Plugin.PluginId);
             foreach (var game in pluginGames)
             {
                 if (!addedGames.Contains(game.GameId))
-                    this.api.Database.RemoveGame(game.Id);
+                    this.api.Database.Games.Remove(game);
             }
         }
 

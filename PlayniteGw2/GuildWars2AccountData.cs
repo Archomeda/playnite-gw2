@@ -89,6 +89,19 @@ namespace PlayniteGw2
         public string ResolveArguments(Settings settings) =>
             !string.IsNullOrEmpty(this.Arguments) ? this.Arguments : settings.DefaultArguments;
 
+        public GameInfo ToPlayniteGameInfo(Settings settings)
+        {
+            return new GameInfo
+            {
+                GameId = this.InternalId.ToString(),
+                Name = $"Guild Wars 2 - {this.Name}",
+                IsInstalled = true,
+                Icon = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "gw2.png"),
+                InstallDirectory = Path.GetDirectoryName(this.ResolvePath(settings)),
+                PlayAction = new GuildWars2PlayAction(this, settings)
+            };
+        }
+
         public Game ToPlayniteGame(Settings settings)
         {
             return new Game
@@ -98,12 +111,11 @@ namespace PlayniteGw2
                 IsInstalled = true,
                 Icon = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "gw2.png"),
                 InstallDirectory = Path.GetDirectoryName(this.ResolvePath(settings)),
-                PlayAction = new GuildWars2PlayAction(this, settings),
-                PluginId = Plugin.PluginId
+                PlayAction = new GuildWars2PlayAction(this, settings)
             };
         }
 
-        public Game ToPlayniteGame(Game originalGame, Settings settings)
+        public Game UpdatePlayniteGame(Game originalGame, Settings settings)
         {
             originalGame.GameId = this.internalId.ToString();
             originalGame.InstallDirectory = Path.GetDirectoryName(this.ResolvePath(settings));

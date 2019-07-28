@@ -1,30 +1,27 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Playnite.SDK;
 using Playnite.SDK.Metadata;
 using Playnite.SDK.Models;
 
 namespace PlayniteGw2.Proxy
 {
-    internal class IGDBMetadataProviderProxy : ILibraryMetadataProvider
+    [SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "Playnite specific")]
+    internal class IGDBMetadataProviderProxy : LibraryMetadataProvider
     {
-        private const string TypeName = "Playnite.Metadata.Providers.IGDBMetadataProvider, Playnite";
-        private static readonly Type TypeObject;
+        private const string TYPE_NAME = "Playnite.Metadata.Providers.IGDBMetadataProvider, Playnite";
+        private static readonly Type typeObject = Type.GetType(TYPE_NAME);
 
-        private readonly ILibraryMetadataProvider metadataProvider;
+        private readonly LibraryMetadataProvider metadataProvider;
+        private readonly string? gameName;
 
-        static IGDBMetadataProviderProxy()
+        public IGDBMetadataProviderProxy(string? gameName = null)
         {
-            TypeObject = Type.GetType(TypeName);
-            if (TypeObject == null)
-                throw new InvalidOperationException($"Type {TypeName} could not be found, cannot proceed.");
+            this.metadataProvider = (LibraryMetadataProvider)Activator.CreateInstance(typeObject);
+            this.gameName = gameName;
         }
 
-        public IGDBMetadataProviderProxy()
-        {
-            this.metadataProvider = (ILibraryMetadataProvider)Activator.CreateInstance(TypeObject);
-        }
-
-        public virtual GameMetadata GetMetadata(Game game) =>
-            this.metadataProvider.GetMetadata(game);
+        public override GameMetadata GetMetadata(Game game) =>
+            this.metadataProvider.GetMetadata(!string.IsNullOrWhiteSpace(this.gameName) ? new Game(this.gameName) : game);
     }
 }
